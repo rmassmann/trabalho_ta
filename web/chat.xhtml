@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
+    <f:view encoding="ISO-8859-1" contentType="text/html"
+            locale="#{controleLocale.currentLocale}">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+        
+    <p:layout fullPage="true">
+     <p:layoutUnit position="north" size="100" header="" resizable="true" closable="true" collapsible="true">
+         <h:form id="formMenu">
+                    <b:navBar brand="TA">
+                        <b:navbarLinks>
+                            <b:navLink value="Inicio" outcome="inicio"/>
+                            <b:dropMenu value="Idiomas">
+                                <b:navCommandLink value="Português"
+                                                  update="frm-users frm-msg"
+                                                  actionListener="#{controleLocale.portugueseLocale()}"/>
+                                <b:navCommandLink value="Inglês"
+                                                  update="frm-users frm-msg"
+                                                  actionListener="#{controleLocale.englishLocale()}"/>                                
+                            </b:dropMenu>
+                        </b:navbarLinks>
+                    </b:navBar>
+                </h:form>
+    </p:layoutUnit>
+
+   
+    <p:layoutUnit position="west" size="300" header="#{msgs['chat.usuarios']}" resizable="true" closable="true" collapsible="true">
+        
+         <h:form id="frm-users">
+            <p:messages/>
+       
+             <p:dataList value="#{controleUsuario.beanChat.listaUsuarios}" var="usuario" type="ordered">
+              
+                <p:inputText id="txt_usuario" value="#{usuario}" />
+                
+                </p:dataList>
+            
+        </h:form>
+    </p:layoutUnit>
+ 
+    <p:layoutUnit position="center" header="Chat">
+        <p:scrollPanel mode="native"  style="width:100%;height:100%">
+           <h:form id="frm-msg">
+            <p:messages/>
+       
+            <p:dataList id="teste1" style="width:95%" value="#{controleUsuario.beanChat.mensagens}" var="mensagem" type="ordered">
+              
+                <p:inputText style="width:90%" id="txt_mens" value="#{mensagem}" />
+                
+                </p:dataList>
+        </h:form>
+        </p:scrollPanel>
+    </p:layoutUnit>
+        <p:layoutUnit position="south" size="200" header="#{msgs['chat.mensagem']}" resizable="true" closable="true" collapsible="true">
+         <h:form id="frm-enviar-msg">          
+             <h:inputText style="width:40%" id="teste" value="#{controleUsuario.beanUsuario.mensagem}"/>
+             
+             <p:commandButton actionListener="#{controleUsuario.beanChat.addMensagem()}" 
+                              title="#{msgs['chat.btn_mensagem']}"
+                              update="frm-msg frm-enviar-msg frm-users"                              
+                              />
+             <h:commandButton actionListener="#{controleUsuario.excluirUsuario()}" 
+                              title="#{msgs['chat.btn_sair']}"       
+                              />
+             <p:poll  listener="#{controleUsuario.beanChat.mensagens}" update="frm-msg" />
+         </h:form>
+         
+    </p:layoutUnit>
+    
+ 
+</p:layout>
+</f:view>
+</html>
+
